@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Plus, Search, Trash2, X } from 'lucide-react'
-import { load, remove, uid, upsert } from '../lib/storage'
+import { load, loadByWorld, remove, uid, upsert, getCurrentWorldId } from '../lib/storage'
 import type { CodexCategory, CodexEntry } from '../types'
 import { Button } from '../components/ui/button'
 import { Input, Textarea } from '../components/ui/input'
@@ -12,10 +12,10 @@ const CATEGORIES: CodexCategory[] = ['角色', '地点', '组织', '物品', '�
 const TABS: (CodexCategory | 'all')[] = ['all', ...CATEGORIES]
 
 export default function Codex() {
-  const [entries, setEntries] = useState<CodexEntry[]>(() => load<CodexEntry>('codex'))
+  const [entries, setEntries] = useState<CodexEntry[]>(() => loadByWorld<CodexEntry>('codex'))
   const [category, setCategory] = useState<CodexCategory | 'all'>('all')
   const [search, setSearch] = useState('')
-  const [selectedId, setSelectedId] = useState<string | null>(() => load<CodexEntry>('codex')[0]?.id ?? null)
+  const [selectedId, setSelectedId] = useState<string | null>(() => loadByWorld<CodexEntry>('codex')[0]?.id ?? null)
   const [tagInput, setTagInput] = useState('')
 
   const filtered = useMemo(() => {
@@ -42,7 +42,7 @@ export default function Codex() {
 
   function handleNew() {
     const cat: CodexCategory = category === 'all' ? '地点' : category
-    const entry: CodexEntry = { id: uid(), category: cat, title: '', content: '', tags: [] }
+    const entry: CodexEntry = { id: uid(), worldId: getCurrentWorldId(), category: cat, title: '', content: '', tags: [] }
     upsert('codex', entry)
     setEntries((prev) => [entry, ...prev])
     setSelectedId(entry.id)

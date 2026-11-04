@@ -1,4 +1,4 @@
-import type { ImportJob, ShareCard, StoreKey, Character } from '../types'
+import type { ImportJob, ShareCard, StoreKey, Character, World } from '../types'
 import { buildSeedData } from '../mock/data'
 
 const PREFIX = 'oc:'
@@ -69,6 +69,21 @@ export function resetDemoData(): void {
     .filter((k) => k.startsWith('oc:'))
     .forEach((k) => localStorage.removeItem(k))
   seedIfEmpty()
+}
+
+// 当前查看的世界观 id（默认第一个世界）
+export function getCurrentWorldId(): string {
+  const worlds = load<World>('worlds')
+  const firstId = worlds[0]?.id ?? 'world-wugang'
+  return getSetting<string>('currentWorldId', firstId)
+}
+
+// 按当前世界观过滤实体（worldId 缺失的旧数据归入第一个世界）
+export function loadByWorld<T extends { worldId?: string }>(key: StoreKey, worldId?: string): T[] {
+  const worlds = load<World>('worlds')
+  const firstId = worlds[0]?.id ?? ''
+  const current = worldId ?? getCurrentWorldId()
+  return load<T>(key).filter((e) => (e.worldId ?? firstId) === current)
 }
 
 // ===== 导出 / 下载 =====

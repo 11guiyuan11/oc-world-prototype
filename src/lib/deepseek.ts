@@ -6,7 +6,7 @@ import type {
   TimelineEvent,
   World,
 } from '../types'
-import { load, uid } from './storage'
+import { load, loadByWorld, uid } from './storage'
 import * as mockAI from './mockAI'
 import type { ChatMessage } from './mockAI'
 
@@ -209,9 +209,9 @@ export async function generateShareCardPrompt(character: Character): Promise<str
 // ===== 构建世界上下文（供一致性检查 / 对话生成使用） =====
 export function buildWorldContext(): string {
   const worlds = load<World>('worlds')
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations')
-  const timeline = load<TimelineEvent>('timeline')
+  const characters = loadByWorld<Character>('characters')
+  const relations = loadByWorld<Relation>('relations')
+  const timeline = loadByWorld<TimelineEvent>('timeline')
 
   const w = worlds[0]
   const worldLine = w

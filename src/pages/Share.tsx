@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { Clock, Sparkles, Users } from 'lucide-react'
-import { load } from '../lib/storage'
-import type { Character, Relation, TimelineEvent } from '../types'
+import { load, loadByWorld } from '../lib/storage'
+import type { Character, Relation, TimelineEvent, World } from '../types'
 
 export default function Share() {
   const { token } = useParams()
@@ -19,9 +19,11 @@ export default function Share() {
     )
   }
 
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations').filter((r) => r.sourceId === character.id || r.targetId === character.id)
-  const events = load<TimelineEvent>('timeline')
+  const firstId = load<World>('worlds')[0]?.id ?? ''
+  const wId = character.worldId ?? firstId
+  const characters = loadByWorld<Character>('characters', wId)
+  const relations = loadByWorld<Relation>('relations', wId).filter((r) => r.sourceId === character.id || r.targetId === character.id)
+  const events = loadByWorld<TimelineEvent>('timeline', wId)
     .filter((e) => e.characterIds.includes(character.id))
     .sort((a, b) => a.calendarYear - b.calendarYear)
     .slice(0, 3)

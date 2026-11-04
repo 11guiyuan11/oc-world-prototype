@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
   Home,
   Users,
@@ -17,8 +17,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
+  Plus,
 } from 'lucide-react'
-import { load, getSetting, setSetting, resetDemoData } from '../lib/storage'
+import { load, setSetting, resetDemoData, getCurrentWorldId } from '../lib/storage'
 import { isDemoMode } from '../lib/deepseek'
 import type { World } from '../types'
 import { cn } from '../lib/utils'
@@ -47,13 +48,7 @@ export default function AppShell() {
   useEffect(() => {
     const list = load<World>('worlds')
     setWorlds(list)
-    const cur = getSetting<string>('currentWorldId', list[0]?.id ?? '')
-    if (!cur && list[0]) {
-      setSetting('currentWorldId', list[0].id)
-      setCurrentWorldId(list[0].id)
-    } else {
-      setCurrentWorldId(cur)
-    }
+    setCurrentWorldId(getCurrentWorldId())
   }, [])
 
   useEffect(() => {
@@ -125,14 +120,12 @@ export default function AppShell() {
 
         <div className="border-t border-border/60 px-5 py-3">
           <div className="text-[11px] text-muted-foreground">数据仅保存在本地浏览器</div>
-          {import.meta.env.PROD && (
-            <button
-              onClick={handleReset}
-              className="mt-2 w-full rounded-md border border-border/60 px-2 py-1.5 text-xs text-muted-foreground hover:bg-secondary hover:text-foreground"
-            >
-              重置演示数据
-            </button>
-          )}
+          <button
+            onClick={handleReset}
+            className="mt-2 w-full rounded-md border border-border/60 px-2 py-1.5 text-xs text-muted-foreground hover:bg-secondary hover:text-foreground"
+          >
+            重置演示数据
+          </button>
         </div>
       </aside>
 
@@ -175,6 +168,13 @@ export default function AppShell() {
             </select>
             <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           </div>
+          <Link
+            to="/onboarding/world"
+            title="新建世界观"
+            className="flex h-7 w-7 items-center justify-center rounded-md border border-dashed border-border/60 text-muted-foreground hover:bg-secondary hover:text-foreground"
+          >
+            <Plus className="h-4 w-4" />
+          </Link>
 
           <div className="flex-1" />
 
@@ -196,7 +196,7 @@ export default function AppShell() {
           </button>
 
           <button
-            className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary"
+            className="hidden rounded-md p-1.5 text-muted-foreground hover:bg-secondary lg:block"
             onClick={() => setPanelOpen((v) => !v)}
             aria-label="切换属性面板"
           >
@@ -205,7 +205,7 @@ export default function AppShell() {
         </header>
 
         <main className="min-h-0 flex-1 overflow-y-auto">
-          <Outlet />
+          <Outlet key={currentWorldId} />
         </main>
       </div>
 

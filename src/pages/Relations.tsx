@@ -13,7 +13,7 @@ import {
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { ArrowRight, X } from 'lucide-react'
-import { load, upsert } from '../lib/storage'
+import { load, loadByWorld, upsert } from '../lib/storage'
 import type { Character, Relation } from '../types'
 import CharacterNode from '../components/relations/CharacterNode'
 import RelationEdge from '../components/relations/RelationEdge'
@@ -124,21 +124,21 @@ export default function Relations() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [editingEdgeId, setEditingEdgeId] = useState<string | null>(null)
 
-  const characters = useMemo(() => load<Character>('characters'), [])
+  const characters = useMemo(() => loadByWorld<Character>('characters'), [])
   const initialNodes = useMemo(() => buildNodes(characters), [characters])
-  const initialEdges = useMemo(() => buildEdges(load<Relation>('relations')), [])
+  const initialEdges = useMemo(() => buildEdges(loadByWorld<Relation>('relations')), [])
 
   const [nodes, , onNodesChange] = useNodesState(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 
   const selected = selectedId ? (characters.find((c) => c.id === selectedId) ?? null) : null
   const editingRelation = editingEdgeId
-    ? (load<Relation>('relations').find((r) => r.id === editingEdgeId) ?? null)
+    ? (loadByWorld<Relation>('relations').find((r) => r.id === editingEdgeId) ?? null)
     : null
 
   function handleSaveRelation(updated: Relation) {
     upsert('relations', updated)
-    setEdges(buildEdges(load<Relation>('relations')))
+    setEdges(buildEdges(loadByWorld<Relation>('relations')))
     setEditingEdgeId(null)
     toast('关系已保存', 'success')
   }

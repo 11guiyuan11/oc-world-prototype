@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight, Clock, Plus, Share2, Users } from 'lucide-react'
-import { load } from '../lib/storage'
+import { load, loadByWorld } from '../lib/storage'
 import type { Character, Relation, ShareCard, TimelineEvent, World } from '../types'
 import { Button } from '../components/ui/button'
 import { Card, CardContent } from '../components/ui/card'
@@ -18,10 +18,10 @@ function stateOf(p: number): StepState {
 
 export default function Home() {
   const worlds = load<World>('worlds')
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations')
-  const timeline = load<TimelineEvent>('timeline')
-  const shareCards = load<ShareCard>('shareCards')
+  const characters = loadByWorld<Character>('characters')
+  const relations = loadByWorld<Relation>('relations')
+  const timeline = loadByWorld<TimelineEvent>('timeline')
+  const shareCards = loadByWorld<ShareCard>('shareCards')
 
   const world = worlds[0]
 

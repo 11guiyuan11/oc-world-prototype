@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Clock, GitFork } from 'lucide-react'
 import type { Character, Relation, TimelineEvent } from '../../types'
-import { load } from '../../lib/storage'
+import { load, loadByWorld } from '../../lib/storage'
 
 export function RelationsSummary({ character }: { character: Character }) {
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations').filter(
+  const characters = loadByWorld<Character>('characters')
+  const relations = loadByWorld<Relation>('relations').filter(
     (r) => r.sourceId === character.id || r.targetId === character.id,
   )
 
@@ -52,7 +52,7 @@ export function RelationsSummary({ character }: { character: Character }) {
 }
 
 export function TimelineSummary({ character }: { character: Character }) {
-  const events = load<TimelineEvent>('timeline')
+  const events = loadByWorld<TimelineEvent>('timeline')
     .filter((e) => e.characterIds.includes(character.id))
     .sort((a, b) => a.calendarYear - b.calendarYear)
 

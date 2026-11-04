@@ -13,7 +13,7 @@ import {
   X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { load, upsert } from '../lib/storage'
+import { load, loadByWorld, upsert } from '../lib/storage'
 import { streamChat } from '../lib/deepseek'
 import type { Character, MapNode, Relation, ShareCard, TimelineEvent, World } from '../types'
 import { Button } from '../components/ui/button'
@@ -85,11 +85,11 @@ function StatCard({
 export default function WorldHome() {
   const { id } = useParams()
   const worlds = load<World>('worlds')
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations')
-  const timeline = load<TimelineEvent>('timeline')
-  const mapNodes = load<MapNode>('mapNodes')
-  const shareCards = load<ShareCard>('shareCards')
+  const characters = loadByWorld<Character>('characters')
+  const relations = loadByWorld<Relation>('relations')
+  const timeline = loadByWorld<TimelineEvent>('timeline')
+  const mapNodes = loadByWorld<MapNode>('mapNodes')
+  const shareCards = loadByWorld<ShareCard>('shareCards')
 
   const world = worlds.find((w) => w.id === id) ?? worlds[0]
 

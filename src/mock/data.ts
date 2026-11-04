@@ -24,6 +24,19 @@ const world: World = {
     '雾港城终年被浓雾笼罩，机械公会与烬组织明争暗斗。调查员林见月追查十年前大火的真相，却一步步逼近自己身世的谜团。',
 }
 
+const neonWorld: World = {
+  id: 'world-neon',
+  name: '赛博朋克：霓虹深渊',
+  tagline: '在数据洪流中，记忆是最昂贵的商品。',
+  genreTags: ['赛博朋克', '科幻', '反乌托邦'],
+  era: '近未来 · 数字都市',
+  calendarName: '网络纪元',
+  calendarStart: 2080,
+  cover: '',
+  description:
+    '霓虹深渊，一座被数据洪流淹没的超级都市。记忆可以买卖，义体可以改造，而真正的自由早已在算法中迷失。',
+}
+
 const characters: Character[] = [
   {
     id: 'char-lin',
@@ -278,14 +291,125 @@ const shareCards: ShareCard[] = [
   },
 ]
 
+const neonCharacters: Character[] = [
+  {
+    id: 'neon-ni',
+    worldId: 'world-neon',
+    name: '霓',
+    alias: ['Neon', '深渊幽灵'],
+    identity: '自由黑客',
+    age: '21',
+    faction: '黑客组织「深渊」',
+    avatar: '',
+    themeColor: '#06b6d4',
+    intro: '游走于数据暗网的天才黑客，用代码对抗霓虹深渊的掌控者。',
+    longBio:
+      '霓，霓虹深渊最臭名昭著的黑客。她相信信息应当自由，于是不断入侵掌控整座城市的「主脑」，把被垄断的记忆数据公之于众。',
+    personalityTags: ['叛逆', '机敏', '孤僻', '理想主义'],
+    appearance: '荧光青短发，右眼植入一枚发光的数据义眼，常穿黑色机能风衣。',
+    outfits: [],
+    voiceUrl: null,
+    gallery: [],
+    attributes: [
+      { dimension: '骇客', value: 92 },
+      { dimension: '敏捷', value: 80 },
+      { dimension: '魅力', value: 55 },
+      { dimension: '武力', value: 40 },
+    ],
+    taboos: ['右眼发光数据义眼不可省略'],
+    updatedAt: now - 1 * H,
+  },
+  {
+    id: 'neon-zero',
+    worldId: 'world-neon',
+    name: '零',
+    alias: ['Zero', '义体佣兵'],
+    identity: '义体改造佣兵',
+    age: '27',
+    faction: '自由佣兵',
+    avatar: '',
+    themeColor: '#f43f5e',
+    intro: '全身义体化的赏金猎人，冷血高效，只为最高出价者效力。',
+    longBio:
+      '零，一名几乎完全义体化的佣兵。他记不清自己成为义体前的样子，只靠接单活着。霓是他唯一不愿下手的对象。',
+    personalityTags: ['冷血', '高效', '寡言', '守诺'],
+    appearance: '银灰短发，红色瞳孔，右臂为碳纤维义体，常穿战术背心。',
+    outfits: [],
+    voiceUrl: null,
+    gallery: [],
+    attributes: [
+      { dimension: '武力', value: 90 },
+      { dimension: '冷静', value: 85 },
+      { dimension: '骇客', value: 30 },
+      { dimension: '社交', value: 25 },
+    ],
+    taboos: ['右臂碳纤维义体不可省略', '红色瞳孔'],
+    updatedAt: now - 3 * H,
+  },
+]
+
+const neonRelations: Relation[] = [
+  {
+    id: 'neon-rel-1',
+    worldId: 'world-neon',
+    sourceId: 'neon-ni',
+    targetId: 'neon-zero',
+    type: '搭档',
+    label: '临时搭档',
+    color: '#06b6d4',
+    lineStyle: 'dashed',
+    note: '霓与零因一桩数据窃案临时联手。',
+  },
+]
+
+const neonTimeline: TimelineEvent[] = [
+  {
+    id: 'neon-ev-2080',
+    worldId: 'world-neon',
+    calendarYear: 2080,
+    displayDate: '网络纪元 2080 年',
+    title: '霓虹深渊第一次大断网',
+    description:
+      '主脑遭遇史无前例的黑客攻击，整座城市断网 12 小时，记忆交易市场一度崩溃。',
+    characterIds: ['neon-ni'],
+    mapNodeId: 'neon-map-city',
+    image: '',
+    updatedAt: now - 2 * H,
+  },
+]
+
+const neonCodex: CodexEntry[] = [
+  {
+    id: 'neon-codex-1',
+    worldId: 'world-neon',
+    category: '组织',
+    title: '深渊',
+    content:
+      '霓虹深渊地下最神秘的黑客组织，主张信息自由，常年与掌控城市的主脑对抗。',
+    tags: ['黑客', '反乌托邦'],
+  },
+]
+
+const neonMapNodes: MapNode[] = [
+  {
+    id: 'neon-map-city',
+    worldId: 'world-neon',
+    parentId: null,
+    name: '霓虹深渊',
+    level: '世界',
+    image: '',
+    markers: [],
+  },
+]
+
 export function buildSeedData() {
   return {
-    worlds: [world],
-    characters,
-    relations,
-    timeline,
-    codex,
-    mapNodes,
+    worlds: [world, neonWorld],
+    characters: [...characters, ...neonCharacters],
+    relations: [...relations, ...neonRelations],
+    timeline: [...timeline, ...neonTimeline],
+    codex: [...codex, ...neonCodex],
+    mapNodes: [...mapNodes, ...neonMapNodes],
     shareCards,
   }
 }

@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import { ArrowLeft, ChevronRight, MapPin, Trash2, Upload, X } from 'lucide-react'
-import { load, readFileAsDataURL, upsert } from '../../lib/storage'
+import { load, loadByWorld, readFileAsDataURL, upsert } from '../../lib/storage'
 import type { Character, CodexEntry, MapMarker, MapNode, TimelineEvent } from '../../types'
 import { Button } from '../ui/button'
 import { toast } from '../ui/toast'
@@ -9,10 +9,10 @@ import MapMarkerModal from './MapMarkerModal'
 import MapCanvas from './MapCanvas'
 
 export default function MapPanel() {
-  const [nodes, setNodes] = useState<MapNode[]>(() => load<MapNode>('mapNodes'))
-  const codex = useMemo(() => load<CodexEntry>('codex'), [])
-  const characters = useMemo(() => load<Character>('characters'), [])
-  const events = useMemo(() => load<TimelineEvent>('timeline'), [])
+  const [nodes, setNodes] = useState<MapNode[]>(() => loadByWorld<MapNode>('mapNodes'))
+  const codex = useMemo(() => loadByWorld<CodexEntry>('codex'), [])
+  const characters = useMemo(() => loadByWorld<Character>('characters'), [])
+  const events = useMemo(() => loadByWorld<TimelineEvent>('timeline'), [])
 
   const root = nodes.find((n) => n.parentId === null) ?? nodes[0]
   const [currentId, setCurrentId] = useState<string | null>(root?.id ?? null)

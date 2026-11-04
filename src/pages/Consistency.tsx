@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AlertCircle, AlertTriangle, ArrowDown, Copy, Info, Loader2, ShieldCheck, Sparkles, X } from 'lucide-react'
-import { load } from '../lib/storage'
+import { load, loadByWorld } from '../lib/storage'
 import { buildWorldContext, checkConsistency, streamCharacterDialog } from '../lib/deepseek'
 import type { Character, CodexEntry, ConsistencyIssue, Relation, TimelineEvent } from '../types'
 import { Button } from '../components/ui/button'
@@ -37,10 +37,10 @@ function matchCitations(text: string, characters: Character[]): string[] {
 }
 
 export default function Consistency() {
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations')
-  const events = load<TimelineEvent>('timeline')
-  const codex = load<CodexEntry>('codex')
+  const characters = loadByWorld<Character>('characters')
+  const relations = loadByWorld<Relation>('relations')
+  const events = loadByWorld<TimelineEvent>('timeline')
+  const codex = loadByWorld<CodexEntry>('codex')
   const worldContext = useMemo(() => buildWorldContext(), [])
 
   const [characterId, setCharacterId] = useState(characters[0]?.id ?? '')

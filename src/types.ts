@@ -39,6 +39,7 @@ export interface AttributeSnapshot {
 
 export interface Character {
   id: string
+  worldId?: string
   name: string
   alias: string[]
   identity: string
@@ -64,6 +65,7 @@ export type LineStyle = 'solid' | 'dashed' | 'dotted'
 
 export interface Relation {
   id: string
+  worldId?: string
   sourceId: string
   targetId: string
   type: string // 师徒 / 敌对 / 契约 / 亲情 / 搭档 ...
@@ -76,6 +78,7 @@ export interface Relation {
 // ===== 时间轴事件 =====
 export interface TimelineEvent {
   id: string
+  worldId?: string
   calendarYear: number
   displayDate: string
   title: string
@@ -91,6 +94,7 @@ export type CodexCategory = '角色' | '地点' | '组织' | '物品' | '种族'
 
 export interface CodexEntry {
   id: string
+  worldId?: string
   category: CodexCategory
   title: string
   content: string
@@ -114,6 +118,7 @@ export interface MapMarker {
 
 export interface MapNode {
   id: string
+  worldId?: string
   parentId: string | null
   name: string
   level: MapLevel
@@ -124,6 +129,7 @@ export interface MapNode {
 // ===== 展示卡 =====
 export interface ShareCard {
   id: string
+  worldId?: string
   characterId: string
   fields: Record<string, boolean>
   theme: string

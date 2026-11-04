@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowRight, Eye, GitFork, Plus, Search, Trash2, Users, X } from 'lucide-react'
-import { load, remove, save, uid, upsert } from '../lib/storage'
+import { load, loadByWorld, remove, save, uid, upsert, getCurrentWorldId } from '../lib/storage'
 import type { Character, Relation } from '../types'
 import { Button } from '../components/ui/button'
 import { Card, CardContent } from '../components/ui/card'
@@ -19,8 +19,8 @@ const DEFAULT_ATTRIBUTES = [
 
 export default function Characters() {
   const navigate = useNavigate()
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations')
+  const characters = loadByWorld<Character>('characters')
+  const relations = loadByWorld<Relation>('relations')
 
   const [search, setSearch] = useState('')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
@@ -329,6 +329,7 @@ function NewCharacterModal({ onClose }: { onClose: () => void }) {
     }
     const c: Character = {
       id: uid(),
+      worldId: getCurrentWorldId(),
       name: form.name.trim(),
       alias: [],
       identity: form.identity.trim(),

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { AlertTriangle, Download, FileDown } from 'lucide-react'
-import { load } from '../lib/storage'
+import { load, loadByWorld } from '../lib/storage'
 import { exportNodeToPng } from '../lib/exportImage'
 import type { Character } from '../types'
 import { Button } from '../components/ui/button'
@@ -15,7 +15,7 @@ const FIELD_OPTIONS = [
 ] as const
 
 export default function ExportArtist() {
-  const characters = load<Character>('characters')
+  const characters = loadByWorld<Character>('characters')
   const [characterId, setCharacterId] = useState(characters[0]?.id ?? '')
   const [fields, setFields] = useState<Record<string, boolean>>({
     appearance: true,
@@ -74,9 +74,9 @@ export default function ExportArtist() {
         </div>
       </header>
 
-      <div className="flex min-h-0 flex-1">
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         {/* 左：字段筛选 */}
-        <aside className="w-72 shrink-0 overflow-y-auto border-r border-border/60 p-4">
+        <aside className="w-full shrink-0 overflow-y-auto border-b border-border/60 p-4 md:w-72 md:border-b-0 md:border-r">
           <div className="mb-3 text-sm font-semibold">给画师看什么</div>
           <div className="mb-4">
             <label className="mb-1 block text-xs text-muted-foreground">选择角色</label>

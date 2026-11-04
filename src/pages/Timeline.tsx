@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MapPin, Pencil, Plus, ZoomIn, ZoomOut } from 'lucide-react'
-import { load, upsert } from '../lib/storage'
+import { load, loadByWorld, upsert } from '../lib/storage'
 import type { Character, MapNode, TimelineEvent, World } from '../types'
 import { Button } from '../components/ui/button'
 import { Card, CardContent } from '../components/ui/card'
@@ -79,9 +79,9 @@ function EventCard({ event, dateLabel, characters, mapNodes, onEdit }: EventCard
 export default function Timeline() {
   const worlds = load<World>('worlds')
   const world = worlds[0]
-  const characters = load<Character>('characters')
-  const mapNodes = load<MapNode>('mapNodes')
-  const allEvents = load<TimelineEvent>('timeline')
+  const characters = loadByWorld<Character>('characters')
+  const mapNodes = loadByWorld<MapNode>('mapNodes')
+  const allEvents = loadByWorld<TimelineEvent>('timeline')
 
   const [calendarName, setCalendarName] = useState(world?.calendarName ?? '星历')
   const [calendarStart, setCalendarStart] = useState(String(world?.calendarStart ?? 0))

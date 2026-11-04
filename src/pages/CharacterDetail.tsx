@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Loader2, Share2, Volume2, VolumeX } from 'lucide-react'
-import { load, upsert } from '../lib/storage'
+import { load, loadByWorld, upsert } from '../lib/storage'
 import type { Character } from '../types'
 import { Button } from '../components/ui/button'
 import { toast } from '../components/ui/toast'
@@ -26,7 +26,7 @@ type TabKey = (typeof TABS)[number]['key']
 export default function CharacterDetail() {
   const { id } = useParams()
   const [character, setCharacter] = useState<Character | null>(() => {
-    return load<Character>('characters').find((c) => c.id === id) ?? null
+    return loadByWorld<Character>('characters').find((c) => c.id === id) ?? null
   })
   const [tab, setTab] = useState<TabKey>('profile')
   const [speaking, setSpeaking] = useState(false)

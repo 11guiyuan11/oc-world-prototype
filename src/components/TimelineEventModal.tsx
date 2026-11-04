@@ -1,7 +1,7 @@
 import { useRef, useState, type ChangeEvent } from 'react'
 import { Upload, X } from 'lucide-react'
 import type { Character, MapNode, TimelineEvent } from '../types'
-import { readFileAsDataURL, uid } from '../lib/storage'
+import { readFileAsDataURL, uid, getCurrentWorldId } from '../lib/storage'
 import { Button } from './ui/button'
 import { Input, Textarea } from './ui/input'
 import { toast } from './ui/toast'
@@ -59,6 +59,7 @@ export default function TimelineEventModal({
     }
     const ev: TimelineEvent = {
       id: event?.id ?? uid(),
+      worldId: getCurrentWorldId(),
       calendarYear: y,
       displayDate: `${calendarName} ${y} 年`,
       title: title.trim(),

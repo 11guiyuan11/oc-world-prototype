@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Copy, Download, Loader2, Sparkles } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
-import { load } from '../lib/storage'
+import { load, loadByWorld } from '../lib/storage'
 import { generateShareCardPrompt } from '../lib/deepseek'
 import type { Character, Relation, TimelineEvent } from '../types'
 import { Button } from '../components/ui/button'
@@ -37,9 +37,9 @@ function outfitSummary(character: Character): string {
 }
 
 export default function ShareCard() {
-  const characters = load<Character>('characters')
-  const relations = load<Relation>('relations')
-  const events = load<TimelineEvent>('timeline')
+  const characters = loadByWorld<Character>('characters')
+  const relations = loadByWorld<Relation>('relations')
+  const events = loadByWorld<TimelineEvent>('timeline')
 
   const [characterId, setCharacterId] = useState(characters[0]?.id ?? '')
   const [layout, setLayout] = useState<'long' | 'card'>('long')
@@ -233,7 +233,7 @@ export default function ShareCard() {
 
       <div className="flex min-h-0 flex-1">
         {/* 左：字段配置 */}
-        <aside className="w-64 shrink-0 overflow-y-auto border-r border-border/60 p-4">
+        <aside className="hidden w-64 shrink-0 overflow-y-auto border-r border-border/60 p-4 lg:block">
           <div className="mb-3 text-sm font-semibold">字段配置</div>
           <div className="space-y-1.5">
             {FIELD_OPTIONS.map((f) => (
@@ -332,7 +332,7 @@ export default function ShareCard() {
         </div>
 
         {/* 右：AI 气质提示词 */}
-        <aside className="w-80 shrink-0 overflow-y-auto border-l border-border/60 p-4">
+        <aside className="hidden w-80 shrink-0 overflow-y-auto border-l border-border/60 p-4 xl:block">
           <div className="mb-3 flex items-center gap-1.5 text-sm font-semibold">
             <Sparkles className="h-4 w-4 text-primary" />
             AI 核心气质提示词
