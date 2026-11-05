@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronRight, Clock, Plus, Share2, Users } from 'lucide-react'
-import { load, loadByWorld } from '../lib/storage'
+import { load, loadByWorld, getCurrentWorldId } from '../lib/storage'
 import type { Character, Relation, ShareCard, TimelineEvent, World } from '../types'
 import { Button } from '../components/ui/button'
 import { Card, CardContent } from '../components/ui/card'
@@ -23,7 +23,7 @@ export default function Home() {
   const timeline = loadByWorld<TimelineEvent>('timeline')
   const shareCards = loadByWorld<ShareCard>('shareCards')
 
-  const world = worlds[0]
+  const world = worlds.find((w) => w.id === getCurrentWorldId()) ?? worlds[0]
 
   const steps = [
     {

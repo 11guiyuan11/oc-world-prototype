@@ -13,7 +13,7 @@ import {
   X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { load, loadByWorld, upsert } from '../lib/storage'
+import { load, loadByWorld, upsert, getCurrentWorldId } from '../lib/storage'
 import { streamChat } from '../lib/deepseek'
 import type { Character, MapNode, Relation, ShareCard, TimelineEvent, World } from '../types'
 import { Button } from '../components/ui/button'
@@ -91,7 +91,7 @@ export default function WorldHome() {
   const mapNodes = loadByWorld<MapNode>('mapNodes')
   const shareCards = loadByWorld<ShareCard>('shareCards')
 
-  const world = worlds.find((w) => w.id === id) ?? worlds[0]
+  const world = worlds.find((w) => w.id === getCurrentWorldId()) ?? worlds.find((w) => w.id === id) ?? worlds[0]
 
   const [editing, setEditing] = useState(false)
   const [descDraft, setDescDraft] = useState('')
