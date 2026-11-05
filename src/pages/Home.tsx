@@ -28,8 +28,8 @@ export default function Home() {
   const steps = [
     {
       key: 'world',
-      title: '建地基',
-      desc: '创建世界观，定下时代与基调',
+      title: '世界架构',
+      desc: '创建世界观，定下时代与规则',
       progress: world ? 1 : 0,
       todo: world ? 0 : 1,
       to: world ? `/world/${world.id}` : '/onboarding/world',
@@ -37,7 +37,7 @@ export default function Home() {
     },
     {
       key: 'characters',
-      title: '捏泥人',
+      title: '角色塑造',
       desc: '添加角色，完善档案与外观',
       progress: Math.min(characters.length / 3, 1),
       todo: Math.max(3 - characters.length, 0),
@@ -46,7 +46,7 @@ export default function Home() {
     },
     {
       key: 'relations',
-      title: '连关系',
+      title: '关系编织',
       desc: '用关系图编织人物羁绊',
       progress: Math.min(relations.length / 5, 1),
       todo: Math.max(5 - relations.length, 0),
@@ -55,7 +55,7 @@ export default function Home() {
     },
     {
       key: 'output',
-      title: '出成品',
+      title: '成果发布',
       desc: '生成展示卡，分享给画师',
       progress: Math.min(shareCards.length / 1, 1),
       todo: Math.max(1 - shareCards.length, 0),
